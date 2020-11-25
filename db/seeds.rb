@@ -1,20 +1,25 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
+# frozen_string_literal: true
 
 require 'faker'
 
-NUM_OF_SEEDS = 100
+BOOKS_AMOUNT = 200
 
-NUM_OF_SEEDS.times do |i|
-  Book.create(
-    available: true,
-    title: Faker::Books::CultureSeries.book
-  )
-  puts "Inserted # #{i} seed into the database"
+def destroy_existing_books
+  Book.destroy_all
 end
+
+def seed_the_books
+  progress_bar = ProgressBar.create(
+    starting_at: 0,
+    total: BOOKS_AMOUNT,
+    format: '%e %B %P%'
+  )
+
+  BOOKS_AMOUNT.times do
+    Book.create(title: Faker::Book.title, available: true)
+    progress_bar.increment
+  end
+end
+
+destroy_existing_books
+seed_the_books

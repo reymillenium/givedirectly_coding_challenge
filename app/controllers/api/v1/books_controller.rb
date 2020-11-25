@@ -43,6 +43,10 @@ module Api
         @book.destroy
       end
 
+      def request_book_data
+
+      end
+
       private
 
       # Use callbacks to share common setup or constraints between actions.
@@ -52,7 +56,7 @@ module Api
 
       # Only allow a trusted parameter "white list" through.
       def book_params
-        params.require(:book).permit(:title)
+        params.require(:book).permit(:title, :available)
       end
     end
 
