@@ -5,6 +5,6 @@ class Book < ApplicationRecord
   # Relations:
   has_one :request, dependent: :destroy
 
-  # Validation:
+  # Validations:
   validates :title, presence: true
 end
