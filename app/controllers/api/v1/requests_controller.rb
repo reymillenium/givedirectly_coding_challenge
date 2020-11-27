@@ -4,7 +4,8 @@ module Api
   module V1
     # rubocop:disable Style/Documentation
     class RequestsController < ApplicationController
-      include ActionView::Helpers::TranslationHelper # data builders need to translate headers even when not rendering
+      include ActionView::Helpers::TranslationHelper
+      include RequestsHelper
 
       before_action :set_request, only: [:show, :update, :destroy]
 
