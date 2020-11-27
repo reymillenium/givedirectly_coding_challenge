@@ -6,10 +6,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       # resources :books
       # resources :requests
-      post '/request', to: 'request#request_book_data'
-      get '/request', to: 'request#index'
-      get '/request/:id', to: 'request#show'
-      delete '/request/:id', to: 'request#destroy'
+      post '/request', to: 'requests#request_book_data'
+      get '/request', to: 'requests#index'
+      get '/request/:id', to: 'requests#show'
+      delete '/request/:id', to: 'requests#destroy'
     end
   end
 

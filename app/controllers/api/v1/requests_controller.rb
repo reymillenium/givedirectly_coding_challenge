@@ -4,6 +4,8 @@ module Api
   module V1
     # rubocop:disable Style/Documentation
     class RequestsController < ApplicationController
+      include ActionView::Helpers::TranslationHelper # data builders need to translate headers even when not rendering
+
       before_action :set_request, only: [:show, :update, :destroy]
 
       # GET /requests
@@ -15,7 +17,16 @@ module Api
 
       # GET /requests/1
       def show
-        render json: @request
+        not_found_request = {
+          status: 404,
+          message: t('errors.resources.not_found', resource: 'request')
+        }
+
+        if @request.present?
+          render json: @request
+        else
+          render json: not_found_request, status: :not_found
+        end
       end
 
       # POST /requests
@@ -45,18 +56,8 @@ module Api
 
       def request_book_data
         email = request_book_data_params.fetch(:email, {})
-        invalid_email = {
-          status: 400,
-          message: t('errors.resources.detailed_invalid', resource: 'email', details: email)
-        }
-        render json: invalid_email, status: :bad_request unless a_valid_email?(email)
-
-        book = Book.find_by_title(params[:title])
-        not_found_book = {
-          status: 404,
-          message: t('errors.resources.not_found', resource: 'book')
-        }
-        render json: not_found_book, status: :not_found unless book
+        title = request_book_data_params.fetch(:title, {})
+        book = Book.find_by_title(title)
 
         if book && a_valid_email?(params[:email])
           was_available = book.request.nil?
@@ -69,14 +70,39 @@ module Api
             title: book.title,
             timestamp: @request.created_at.to_time.iso8601
           }
+        else
+          if !a_valid_email?(email) && book.nil?
+            multi_status = {
+              status: 207,
+              message: t('errors.resources.not_book_found_and_email_invalid', title: title, email: email)
+            }
+
+            render json: multi_status, status: :multi_status
+          elsif !a_valid_email?(email)
+            invalid_email = {
+              status: 400,
+              message: t('errors.resources.detailed_invalid', resource: 'email', details: email)
+            }
+
+            render json: invalid_email, status: :bad_request
+          elsif book.nil?
+            not_found_book = {
+              status: 404,
+              message: t('errors.resources.not_found', resource: 'book')
+            }
+
+            render json: not_found_book, status: :not_found
+          end
         end
+
+
       end
 
       private
 
       # Use callbacks to share common setup or constraints between actions.
       def set_request
-        @request = Request.find(params[:id])
+        @request = Request.find_by_id(params[:id])
       end
 
       # Only allow a trusted parameter "white list" through.
