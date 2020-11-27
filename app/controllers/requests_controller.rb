@@ -42,25 +42,32 @@ class RequestsController < ApplicationController
   end
 
   def request_book_data
-    payload = {
+    email = request_book_data_params.fetch(:email, {})
+    invalid_email = {
       status: 400,
-      message: "invailed email"
+      message: t('errors.resources.detailed_invalid', resource: 'email', details: email)
     }
-    render json: payload, status: :bad_request unless validate_email
+    render json: invalid_email, status: :bad_request unless a_valid_email?(email)
 
     book = Book.find_by_title(params[:title])
-    return unless book
+    not_found_book = {
+      status: 404,
+      message: t('errors.resources.not_found', resource: 'book')
+    }
+    render json: not_found_book, status: :not_found unless book
 
-    if book.timestamp.empty?
-      book.update_attribute(:timestamp, DateTime.now)
+    if book && a_valid_email?(params[:email])
+      was_available = book.request.nil?
+      @request = was_available ? Request.new(request_params.merge(book_id: book.id)) : book.request
+      @request.save unless @request.persisted?
+
       render json: {
         id: book.id,
-        avilable: book.available,
+        available: was_available,
         title: book.title,
-        timestamp: book.timestamp.to_time.iso8601
+        timestamp: @request.created_at.to_time.iso8601
       }
     end
-
   end
 
   private
@@ -73,5 +80,9 @@ class RequestsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   def request_params
     params.require(:request).permit(:email)
+  end
+
+  def request_book_data_params
+    params.require(:request).permit(:email, :title)
   end
 end

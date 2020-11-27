@@ -163,7 +163,7 @@ en:
       not_assigned: 'No %{resource} assigned'
       not_settings_found: 'No %{resource} settings found'
       identified_not_found: 'No %{resource} identified with %{id} was found'
-      detailed_invalid: '%{resource} is invalid. Details: %{details}'
+      detailed_invalid: 'The %{resource} is invalid. Details: %{details}'
       missing_invalid: '%{resource} is missing or invalid'
       check_error_details: '%{resource} is invalid, please check the error details'
       not_selected: 'No %{resource} selected'

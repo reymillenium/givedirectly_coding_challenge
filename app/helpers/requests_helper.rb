@@ -4,7 +4,7 @@
 module RequestsHelper
   VALID_EMAIL_REGEX = URI::MailTo::EMAIL_REGEXP
 
-  def valid_email?(email)
+  def a_valid_email?(email)
     !(email =~ VALID_EMAIL_REGEX).nil?
   end
 end
