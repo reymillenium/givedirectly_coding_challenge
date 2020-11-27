@@ -2,14 +2,14 @@
 
 Rails.application.routes.draw do
 
-  resources :requests
   namespace :api do
     namespace :v1 do
       # resources :books
-      post '/request', to: 'books#request_book_data'
-      get '/request', to: 'books#index'
-      get '/request/:id', to: 'books#show'
-      delete '/request/:id', to: 'books#destroy'
+      # resources :requests
+      post '/request', to: 'request#request_book_data'
+      get '/request', to: 'request#index'
+      get '/request/:id', to: 'request#show'
+      delete '/request/:id', to: 'request#destroy'
     end
   end
 
