@@ -1,24 +1,42 @@
-# README
+# GiveDirectly Coding Challenge
+- Challenge version 1.4
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Ruby version
+2.7.0
 
-Things you may want to cover:
+## System dependencies
+- Rails 6.0.3.4
+- Sqlite3 v1.4.2
 
-* Ruby version
+## Configuration
+- Clone the repository
+- No need of local variables
+- Execute in the terminal:
 
-* System dependencies
+```
+$ bundle install
+```
 
-* Configuration
+## Database creation
+- Execute on the terminal:
+```
+$ rake db:create
+```
 
-* Database creation
+## Database initialization
+- Run the migrations on the terminal:
+```
+$ rake db:migrate
+```
 
-* Database initialization
+## Deployment instructions
+- Execute on the terminal:
+```
+$ rails s
+```
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Accessible routes:
+- POST /api/v1/request
+- GET /api/v1/request  
+- GET /api/v1/request/:id
+- DELETE /api/v1/request/:id
