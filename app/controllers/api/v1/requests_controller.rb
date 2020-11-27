@@ -59,7 +59,7 @@ module Api
         title = request_book_data_params.fetch(:title, {})
         book = Book.find_by_title(title)
 
-        if book && a_valid_email?(params[:email])
+        if book && a_valid_email?(email)
           was_available = book.request.nil?
           @request = was_available ? Request.new(request_params.merge(book_id: book.id)) : book.request
           @request.save unless @request.persisted?
@@ -94,8 +94,6 @@ module Api
             render json: not_found_book, status: :not_found
           end
         end
-
-
       end
 
       private

@@ -43,10 +43,6 @@ module Api
         @book.destroy
       end
 
-      def request_book_data
-
-      end
-
       private
 
       # Use callbacks to share common setup or constraints between actions.
