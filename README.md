@@ -28,6 +28,10 @@ $ rake db:create
 ```
 $ rake db:migrate
 ```
+- Run the seeder on the terminal:
+```
+$ rake db:seed
+```
 
 ## Deployment instructions
 - Execute on the terminal:
